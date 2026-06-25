@@ -1,0 +1,37 @@
+@page "/fluxor-demo"
+@rendermode InteractiveServer
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@using Fluxor
+@using StateManagementPoc.FluxorDemo
+
+@inject IDispatcher Dispatcher
+@inject IState<TagState> State
+
+<h2>Fluxor Tag Demo (third-party Redux-style state management)</h2>
+
+<div class="mb-3">
+    @foreach (var tag in availableTags)
+    {
+        bool isSelected = State.Value.SelectedTags.Contains(tag);
+        <button class="btn @(isSelected ? "btn-primary" : "btn-outline-secondary") me-2 mb-2"
+                @onclick="() => Dispatcher.Dispatch(new SelectTagAction(tag))">
+            @(isSelected ? "✓ " : "")@tag
+        </button>
+    }
+</div>
+
+<p>
+    Selected tags:
+    @if (State.Value.SelectedTags.Count == 0)
+    {
+        <em>(none)</em>
+    }
+    else
+    {
+        @string.Join(separator: ", ", State.Value.SelectedTags)
+    }
+</p>
+
+@code {
+    private readonly string[] availableTags = { "Urgent", "Internal", "Draft" };
+}

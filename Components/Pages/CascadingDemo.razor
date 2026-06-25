@@ -1,0 +1,32 @@
+@page "/cascading-demo"
+@rendermode InteractiveServer
+@inject UserContext UserContext
+@inject CascadingValueSource<UserContext> UserContextSource
+
+@* CascadingValueSource<T> is a DI-registered programmatic cascading value supplier. It cannot
+   be used as a component field passed to <CascadingValue> — CascadingValue<T>.Value expects TValue,
+   not a CascadingValueSource<T>. The source is registered via AddCascadingValue in Program.cs,
+   which wires it into the renderer's ICascadingValueSupplier chain. Descendants receive UserContext
+   via [CascadingParameter] without any explicit <CascadingValue> wrapper in this markup.
+   NotifyChangedAsync() (parameterless overload) notifies all subscribers that the mutated
+   object has changed, triggering re-renders of any component with a matching [CascadingParameter]. *@
+
+<PageTitle>Cascading Value Demo</PageTitle>
+
+<h1>Cascading Value Demo</h1>
+
+<p>Current IsAdmin (this page, direct): <strong>@UserContext.IsAdmin</strong></p>
+
+<button class="btn btn-primary mb-3" @onclick="ToggleAdmin">Toggle Admin</button>
+
+<MiddleLayer>
+    <PermissionAwareLeaf />
+</MiddleLayer>
+
+@code {
+    private async Task ToggleAdmin()
+    {
+        UserContext.IsAdmin = !UserContext.IsAdmin;
+        await UserContextSource.NotifyChangedAsync();
+    }
+}

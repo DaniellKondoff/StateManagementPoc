@@ -1,0 +1,42 @@
+@page "/"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+@inject CaseSelectionState CaseSelectionState
+@inject CaseRepository CaseRepository
+
+<PageTitle>Cases</PageTitle>
+
+<h1>Cases</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in CaseRepository.GetAll())
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>
+                    <button class="btn btn-primary btn-sm"
+                            @onclick="() => ViewCase(item)">
+                        View
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private void ViewCase(CaseDto dto)
+    {
+        CaseSelectionState.SelectedCase = dto;
+        NavigationManager.NavigateTo($"/case/{dto.Id}");
+    }
+}

@@ -1,0 +1,48 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">StateManagementPoc</a>
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="nav flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Cases
+            </NavLink>
+        </div>
+
+        <hr class="my-1" style="border-color: rgba(255,255,255,0.2);" />
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/order/new">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> New Order
+            </NavLink>
+        </div>
+
+        <hr class="my-1" style="border-color: rgba(255,255,255,0.2);" />
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="cascading-demo">
+                <span class="bi bi-layers" aria-hidden="true"></span> Cascading Demo
+            </NavLink>
+        </div>
+
+        <hr class="my-1" style="border-color: rgba(255,255,255,0.2);" />
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="fluxor-demo">
+                <span class="bi bi-diagram-3" aria-hidden="true"></span> Fluxor Demo
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="fluxor-compose">
+                <span class="bi bi-diagram-3" aria-hidden="true"></span> Fluxor: Compose Task
+            </NavLink>
+        </div>
+    </nav>
+</div>
+

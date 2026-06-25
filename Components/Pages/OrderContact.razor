@@ -1,0 +1,44 @@
+@page "/order/new/contact"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+@inject OrderDraftState OrderDraftState
+
+<PageTitle>New Order — Step 2</PageTitle>
+
+<h1>New Order — Step 2</h1>
+
+<div style="max-width: 480px;">
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input class="form-control" @bind="_email" placeholder="email@example.com" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Phone</label>
+        <input class="form-control" @bind="_phone" placeholder="+1 555 000 0000" />
+    </div>
+    <a class="btn btn-secondary me-2" href="/order/new">&larr; Back</a>
+    <button class="btn btn-primary" @onclick="Next">Next</button>
+</div>
+
+@code {
+    private string _email = string.Empty;
+    private string _phone = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        if (!RendererInfo.IsInteractive) return;
+        if (OrderDraftState.Draft is null)
+            NavigationManager.NavigateTo("/order/new");
+        else
+        {
+            _email = OrderDraftState.Draft.Email;
+            _phone = OrderDraftState.Draft.Phone;
+        }
+    }
+
+    private void Next()
+    {
+        OrderDraftState.Draft = OrderDraftState.Draft! with { Email = _email, Phone = _phone };
+        NavigationManager.NavigateTo("/order/new/review");
+    }
+}

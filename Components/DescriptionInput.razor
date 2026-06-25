@@ -1,0 +1,24 @@
+@* Demonstrates child-to-parent communication via an explicit, manually-wired EventCallback,
+   without @bind-Value sugar. The parent passes Value down as a one-way parameter and supplies
+   an OnValueChanged handler that writes the new string back to its own field. Contrast with
+   NameInput.razor, which achieves the same underlying mechanism using @bind-Value shorthand
+   (Blazor desugars @bind-Value into exactly Value + ValueChanged). Holds no state of its own.
+   The parameter is named OnValueChanged (not ValueChanged) deliberately, so the @bind-Value
+   shorthand cannot be used and callers must wire it explicitly. *@
+
+<textarea class="form-control"
+          rows="4"
+          placeholder="Describe the order"
+          @onchange="@(async e => await OnValueChanged.InvokeAsync(e.Value?.ToString() ?? string.Empty))">@Value</textarea>
+
+@code {
+    /// <summary>Current value supplied by the parent.</summary>
+    [Parameter] public string Value { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Callback invoked when the user changes the textarea. Named OnValueChanged (not
+    /// ValueChanged) so Blazor's @bind-Value shorthand cannot be used — callers must wire
+    /// this explicitly.
+    /// </summary>
+    [Parameter] public EventCallback<string> OnValueChanged { get; set; }
+}

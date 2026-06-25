@@ -1,0 +1,79 @@
+@page "/fluxor-preview"
+@rendermode InteractiveServer
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@using Fluxor
+@using StateManagementPoc.FluxorDemo
+
+@inject IDispatcher Dispatcher
+@inject IState<TaskDraftState> DraftState
+@inject IState<TagState> TagState
+@inject NavigationManager Nav
+
+<h2>Fluxor: Task Preview</h2>
+
+<div class="alert alert-success mb-4">
+    This data was entered on the previous page. The Fluxor store preserved it across navigation —
+    no repository lookup, no re-fetch. The store is circuit-scoped, just like a scoped DI service.
+</div>
+
+<div class="card mb-4" style="max-width: 480px;">
+    <div class="card-body">
+        <dl class="mb-0">
+            <dt>Title</dt>
+            <dd>
+                @if (string.IsNullOrWhiteSpace(DraftState.Value.Title))
+                {
+                    <em class="text-muted">(none)</em>
+                }
+                else
+                {
+                    @DraftState.Value.Title
+                }
+            </dd>
+
+            <dt>Priority</dt>
+            <dd>
+                @if (string.IsNullOrWhiteSpace(DraftState.Value.Priority))
+                {
+                    <em class="text-muted">(none)</em>
+                }
+                else
+                {
+                    <span class="badge @PriorityBadgeClass(DraftState.Value.Priority)">@DraftState.Value.Priority</span>
+                }
+            </dd>
+
+            <dt>Tags</dt>
+            <dd>
+                @if (TagState.Value.SelectedTags.Count == 0)
+                {
+                    <em class="text-muted">(none)</em>
+                }
+                else
+                {
+                    @string.Join(", ", TagState.Value.SelectedTags)
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<a class="btn btn-outline-secondary me-2" href="/fluxor-compose">&larr; Back to edit</a>
+<button class="btn btn-outline-danger" @onclick="ClearAndRestart">Clear &amp; start over</button>
+
+@code {
+    private void ClearAndRestart()
+    {
+        Dispatcher.Dispatch(new ClearTaskDraftAction());
+        Dispatcher.Dispatch(new ClearTagsAction());
+        Nav.NavigateTo("/fluxor-compose");
+    }
+
+    private static string PriorityBadgeClass(string priority) => priority switch
+    {
+        "Low" => "bg-success",
+        "Medium" => "bg-warning text-dark",
+        "High" => "bg-danger",
+        _ => "bg-secondary"
+    };
+}

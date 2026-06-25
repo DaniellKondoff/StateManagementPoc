@@ -1,0 +1,16 @@
+@* Nested two levels below where the CascadingValueSource is declared:
+   CascadingDemo → MiddleLayer → PermissionAwareLeaf. Receives CurrentUser directly
+   from the framework via [CascadingParameter] — MiddleLayer has no knowledge of
+   UserContext and passes nothing explicitly. *@
+
+<div class="border border-primary rounded p-3">
+    <p>Leaf component rendered.</p>
+    @if (CurrentUser?.IsAdmin == true)
+    {
+        <p>🔒 Admin-only content: you can see this because IsAdmin is true.</p>
+    }
+</div>
+
+@code {
+    [CascadingParameter] public UserContext? CurrentUser { get; set; }
+}

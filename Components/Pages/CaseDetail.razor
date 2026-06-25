@@ -1,0 +1,56 @@
+@page "/case/{Id:int}"
+@rendermode InteractiveServer
+@implements IDisposable
+@inject NavigationManager NavigationManager
+@inject CaseSelectionState CaseSelectionState
+@inject CaseRepository CaseRepository
+
+<PageTitle>Case @Id</PageTitle>
+
+@if (_case is not null)
+{
+    <h1>Case @_case.Id — @_case.Name</h1>
+}
+else
+{
+    <h1>Case @Id</h1>
+    <p class="text-danger">Case not found.</p>
+}
+
+<button class="btn btn-secondary" @onclick="BackToList">
+    Back to list
+</button>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private CaseDto? _case;
+
+    protected override void OnInitialized()
+    {
+        CaseSelectionState.OnChange += StateHasChanged;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (CaseSelectionState.SelectedCase is { } c && c.Id == Id)
+        {
+            _case = c;
+        }
+        else
+        {
+            _case = CaseRepository.GetById(Id);
+            if (_case is not null)
+                CaseSelectionState.SelectedCase = _case;
+        }
+    }
+
+    public void Dispose()
+    {
+        CaseSelectionState.OnChange -= StateHasChanged;
+        Console.WriteLine("CaseDetail disposed"); // TODO: remove after manual verification
+    }
+
+    private void BackToList() => NavigationManager.NavigateTo("/");
+}

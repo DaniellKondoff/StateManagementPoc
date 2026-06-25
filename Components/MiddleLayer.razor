@@ -1,0 +1,16 @@
+@* Deliberately unaware of the cascading value. This component has no [CascadingParameter],
+   no [Parameter] related to UserContext or IsAdmin, and no @code logic referencing either.
+   It exists solely to demonstrate that intermediate layers in a component tree do not need
+   to know about or relay a cascading value — the framework delivers it directly to any
+   descendant that declares [CascadingParameter], skipping all layers in between.
+   Contrast with the TagSection/TagPicker bubbling pattern elsewhere in this project, where
+   every layer must explicitly participate to pass a value downward. *@
+
+<div class="border border-secondary rounded p-3 mb-3">
+    <p class="text-muted small mb-2">Middle layer (no knowledge of cascading value)</p>
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

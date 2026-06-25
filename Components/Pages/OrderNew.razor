@@ -1,0 +1,41 @@
+@page "/order/new"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+@inject OrderDraftState OrderDraftState
+
+<PageTitle>New Order — Step 1</PageTitle>
+
+<h1>New Order — Step 1</h1>
+
+<div style="max-width: 480px;">
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <NameInput @bind-Value="_name" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <DescriptionInput Value="@_description" OnValueChanged="(newValue) => _description = newValue" />
+    </div>
+    <button class="btn btn-primary" @onclick="Next">Next</button>
+</div>
+
+@code {
+    private string _name = string.Empty;
+    private string _description = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        if (RendererInfo.IsInteractive && OrderDraftState.Draft is { } draft)
+        {
+            _name = draft.Name;
+            _description = draft.Description;
+        }
+    }
+
+    private void Next()
+    {
+        var existing = OrderDraftState.Draft;
+        OrderDraftState.Draft = new OrderDto(_name, _description, existing?.Email ?? string.Empty, existing?.Phone ?? string.Empty);
+        NavigationManager.NavigateTo("/order/new/review");
+    }
+}

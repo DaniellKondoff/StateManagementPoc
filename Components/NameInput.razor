@@ -1,0 +1,19 @@
+@* Pure relay component: holds no state. Demonstrates child-to-parent communication via
+   two-way binding — the parent uses @bind-Value="someField", which Blazor desugars into
+   Value="someField" ValueChanged="v => someField = v". This component handles @onchange
+   on the inner input and manually calls ValueChanged.InvokeAsync, because using @bind on
+   the inner input would only update the local parameter copy and never propagate the new
+   value back to the parent. *@
+
+<input class="form-control"
+       value="@Value"
+       @onchange="@(e => ValueChanged.InvokeAsync(e.Value?.ToString() ?? string.Empty))"
+       placeholder="Order name" />
+
+@code {
+    /// <summary>Current value supplied by the parent.</summary>
+    [Parameter] public string Value { get; set; } = string.Empty;
+
+    /// <summary>Notifies the parent when the user changes the input.</summary>
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+}

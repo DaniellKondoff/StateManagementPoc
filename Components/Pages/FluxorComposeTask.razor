@@ -1,0 +1,70 @@
+@page "/fluxor-compose"
+@rendermode InteractiveServer
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@using Fluxor
+@using StateManagementPoc.FluxorDemo
+
+@inject IDispatcher Dispatcher
+@inject IState<TaskDraftState> DraftState
+@inject IState<TagState> TagState
+@inject NavigationManager Nav
+
+<h2>Fluxor: Compose Task</h2>
+
+<div class="alert alert-info mb-4">
+    Fill in the task details, then click <strong>Preview</strong>. Navigate back and forth — state is preserved
+    by the Fluxor store across page transitions, with no repository lookup required.
+</div>
+
+<div class="mb-3">
+    <label class="form-label fw-semibold">Title</label>
+    <input class="form-control"
+           placeholder="Enter task title"
+           value="@DraftState.Value.Title"
+           @oninput="e => Dispatcher.Dispatch(new SetTaskTitleAction(e.Value?.ToString() ?? string.Empty))" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label fw-semibold">Priority</label>
+    <div>
+        @foreach (var p in priorities)
+        {
+            bool isActive = DraftState.Value.Priority == p;
+            <button class="btn @(isActive ? PriorityButtonClass(p) : "btn-outline-secondary") me-2"
+                    @onclick="() => Dispatcher.Dispatch(new SetTaskPriorityAction(p))">
+                @p
+            </button>
+        }
+    </div>
+</div>
+
+<div class="mb-4">
+    <label class="form-label fw-semibold">Tags</label>
+    <div>
+        @foreach (var tag in availableTags)
+        {
+            bool isSelected = TagState.Value.SelectedTags.Contains(tag);
+            <button class="btn @(isSelected ? "btn-primary" : "btn-outline-secondary") me-2 mb-2"
+                    @onclick="() => Dispatcher.Dispatch(new SelectTagAction(tag))">
+                @(isSelected ? "✓ " : "")@tag
+            </button>
+        }
+    </div>
+</div>
+
+<button class="btn btn-success" @onclick="GoToPreview">Preview &rarr;</button>
+
+@code {
+    private readonly string[] priorities = { "Low", "Medium", "High" };
+    private readonly string[] availableTags = { "Urgent", "Internal", "Draft" };
+
+    private void GoToPreview() => Nav.NavigateTo("/fluxor-preview");
+
+    private static string PriorityButtonClass(string priority) => priority switch
+    {
+        "Low" => "btn-success",
+        "Medium" => "btn-warning",
+        "High" => "btn-danger",
+        _ => "btn-secondary"
+    };
+}

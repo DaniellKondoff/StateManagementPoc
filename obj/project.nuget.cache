@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "lyzVXspAe4I=",
+  "success": true,
+  "projectFilePath": "D:\\MyCode\\BlazorStatePoc\\StateManagementPoc\\StateManagementPoc.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Kondoff\\.nuget\\packages\\fluxor\\6.9.0\\fluxor.6.9.0.nupkg.sha512",
+    "C:\\Users\\Kondoff\\.nuget\\packages\\fluxor.blazor.web\\6.9.0\\fluxor.blazor.web.6.9.0.nupkg.sha512",
+    "C:\\Users\\Kondoff\\.nuget\\packages\\fluxor.blazor.web.reduxdevtools\\6.9.0\\fluxor.blazor.web.reduxdevtools.6.9.0.nupkg.sha512",
+    "C:\\Users\\Kondoff\\.nuget\\packages\\microsoft.aspnetcore.app.internal.assets\\10.0.9\\microsoft.aspnetcore.app.internal.assets.10.0.9.nupkg.sha512"
+  ],
+  "logs": []
+}

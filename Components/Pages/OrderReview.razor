@@ -1,0 +1,67 @@
+@page "/order/new/review"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+@inject OrderDraftState OrderDraftState
+
+<PageTitle>New Order — Review</PageTitle>
+
+@if (OrderDraftState.Draft is not null)
+{
+    <h1>New Order — Review</h1>
+
+    <dl class="row" style="max-width: 480px;">
+        <dt class="col-sm-3">Name</dt>
+        <dd class="col-sm-9">@OrderDraftState.Draft.Name</dd>
+
+        <dt class="col-sm-3">Description</dt>
+        <dd class="col-sm-9">@OrderDraftState.Draft.Description</dd>
+
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">
+            @if (string.IsNullOrWhiteSpace(OrderDraftState.Draft.Email))
+            {
+                <em class="text-muted">(none)</em>
+            }
+            else
+            {
+                @OrderDraftState.Draft.Email
+            }
+        </dd>
+
+        <dt class="col-sm-3">Phone</dt>
+        <dd class="col-sm-9">
+            @if (string.IsNullOrWhiteSpace(OrderDraftState.Draft.Phone))
+            {
+                <em class="text-muted">(none)</em>
+            }
+            else
+            {
+                @OrderDraftState.Draft.Phone
+            }
+        </dd>
+    </dl>
+
+    <button class="btn btn-primary" @onclick="Confirm">Confirm</button>
+    <button class="btn btn-secondary ms-2" @onclick="BackToEdit">Back to edit</button>
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        if (RendererInfo.IsInteractive && OrderDraftState.Draft is null)
+        {
+            NavigationManager.NavigateTo("/order/new");
+        }
+    }
+
+    private void Confirm()
+    {
+        OrderDraftState.Clear();
+        NavigationManager.NavigateTo("/");
+    }
+
+    private void BackToEdit()
+    {
+        NavigationManager.NavigateTo("/order/new/contact");
+    }
+}
