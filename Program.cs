@@ -14,6 +14,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddScoped<CaseSelectionState>();
 builder.Services.AddScoped<CaseRepository>();
 builder.Services.AddScoped<OrderDraftState>();
+builder.Services.AddScoped<StateContainer>();
 
 // Cascading value demo — UserContext distributed via CascadingValueSource.
 // Registered as Singleton so all circuits share the same instance and the toggle

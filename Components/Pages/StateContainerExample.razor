@@ -1,0 +1,34 @@
+@page "/state-container-example"
+@implements IDisposable
+@inject StateContainer StateContainer
+@rendermode InteractiveServer
+
+<h1>State Container Example component</h1>
+
+<p>State Container component Property: <b>@StateContainer.Property</b></p>
+
+<p>
+    <button @onclick="ChangePropertyValue">
+        Change the Property from the State Container Example component
+    </button>
+</p>
+
+<Nested />
+
+@code {
+    protected override void OnInitialized()
+    {
+        StateContainer.OnChange += StateHasChanged;
+    }
+
+    private void ChangePropertyValue()
+    {
+        StateContainer.Property = "New value set in the State " +
+            $"Container Example component: {DateTime.Now}";
+    }
+
+    public void Dispose()
+    {
+        StateContainer.OnChange -= StateHasChanged;
+    }
+}

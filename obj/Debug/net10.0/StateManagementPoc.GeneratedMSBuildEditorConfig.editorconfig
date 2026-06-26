@@ -43,6 +43,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xOYW1lSW5wdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/MyCode/BlazorStatePoc/StateManagementPoc/Components/Nested.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xOZXN0ZWQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/MyCode/BlazorStatePoc/StateManagementPoc/Components/Pages/CascadingDemo.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDYXNjYWRpbmdEZW1vLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
@@ -85,6 +89,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/MyCode/BlazorStatePoc/StateManagementPoc/Components/Pages/OrderReview.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xPcmRlclJldmlldy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyCode/BlazorStatePoc/StateManagementPoc/Components/Pages/StateContainerExample.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdGF0ZUNvbnRhaW5lckV4YW1wbGUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/MyCode/BlazorStatePoc/StateManagementPoc/Components/PermissionAwareLeaf.razor]
