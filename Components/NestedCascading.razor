@@ -1,0 +1,28 @@
+@* Receives SharedStringState via [CascadingParameter] — registered app-wide via AddCascadingValue
+   in Program.cs. No @inject StateContainer, no OnChange subscription, no IDisposable needed.
+   NotifyChangedAsync() on the source triggers re-renders of all [CascadingParameter] consumers. *@
+
+@inject CascadingValueSource<SharedStringState> StateSource
+
+<h2>Nested component (cascading)</h2>
+
+<p>Nested component Property: <b>@State?.Property</b></p>
+
+<p>
+    <button @onclick="ChangePropertyValue">
+        Change the Property from the Nested component
+    </button>
+</p>
+
+@code {
+    [CascadingParameter] public SharedStringState? State { get; set; }
+
+    private async Task ChangePropertyValue()
+    {
+        if (State is not null)
+        {
+            State.Property = $"New value set in the Nested component: {DateTime.Now}";
+            await StateSource.NotifyChangedAsync();
+        }
+    }
+}

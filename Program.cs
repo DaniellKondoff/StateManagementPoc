@@ -16,15 +16,21 @@ builder.Services.AddScoped<CaseRepository>();
 builder.Services.AddScoped<OrderDraftState>();
 builder.Services.AddScoped<StateContainer>();
 
-// Cascading value demo — UserContext distributed via CascadingValueSource.
-// Registered as Singleton so all circuits share the same instance and the toggle
-// on CascadingDemo.razor is visible to all active sessions (demo-only; real apps
-// would use Scoped to isolate per user).
-var userContext = new UserContext();
-var userContextSource = new CascadingValueSource<UserContext>(userContext, isFixed: false);
-builder.Services.AddSingleton(userContext);
-builder.Services.AddSingleton(userContextSource);
-builder.Services.AddCascadingValue(_ => userContextSource);
+// CascadingValueSource demo — SharedStringState distributed per-circuit via CascadingValueSource.
+// Scoped so each user gets their own isolated instance (contrast with Singleton UserContext above).
+builder.Services.AddScoped<SharedStringState>();
+builder.Services.AddScoped<CascadingValueSource<SharedStringState>>(sp =>
+    new CascadingValueSource<SharedStringState>(
+        sp.GetRequiredService<SharedStringState>(), isFixed: false));
+builder.Services.AddCascadingValue(sp =>
+    sp.GetRequiredService<CascadingValueSource<SharedStringState>>());
+
+builder.Services.AddScoped<UserContext>();
+builder.Services.AddScoped<CascadingValueSource<UserContext>>(sp =>
+    new CascadingValueSource<UserContext>(
+        sp.GetRequiredService<UserContext>(), isFixed: false));
+builder.Services.AddCascadingValue(sp =>
+    sp.GetRequiredService<CascadingValueSource<UserContext>>());
 
 // Fluxor: third-party Redux-style state management, added for comparison purposes only —
 // see docs/state-management.md for built-in alternatives used elsewhere in this project.

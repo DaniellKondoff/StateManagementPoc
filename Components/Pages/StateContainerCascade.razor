@@ -1,0 +1,42 @@
+@page "/state-container-cascade"
+@rendermode InteractiveServer
+@inject CascadingValueSource<SharedStringState> StateSource
+
+<PageTitle>State Container — CascadingValueSource</PageTitle>
+
+<h1>State Container — CascadingValueSource</h1>
+
+<p>
+    No <code>StateContainer</code>, no <code>OnChange</code> event, no <code>IDisposable</code>.
+    <code>CascadingValueSource&lt;SharedStringState&gt;</code> is registered in DI per-circuit
+    and delivers <code>SharedStringState</code> to all descendants via
+    <code>[CascadingParameter]</code>. Calling <code>NotifyChangedAsync()</code> triggers
+    re-renders of every subscriber automatically — no manual subscription wiring needed.
+</p>
+<p>
+    Compare with <a href="/state-container-example">State Container Example</a> which achieves
+    the same visible result using <code>OnChange</code> + <code>IDisposable</code>.
+</p>
+
+<p>Page Property: <b>@State?.Property</b></p>
+
+<p>
+    <button @onclick="ChangePropertyValue">
+        Change the Property from the page
+    </button>
+</p>
+
+<NestedCascading />
+
+@code {
+    [CascadingParameter] public SharedStringState? State { get; set; }
+
+    private async Task ChangePropertyValue()
+    {
+        if (State is not null)
+        {
+            State.Property = $"New value set in the page: {DateTime.Now}";
+            await StateSource.NotifyChangedAsync();
+        }
+    }
+}

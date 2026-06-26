@@ -4,3 +4,6 @@
 
 /bin/Debug/net10.0
 /obj
+/obj/*
+/obj/Debug/net10.0/StateManagementPoc.AssemblyInfoInputs.cache
+/obj/Debug/net10.0/StateManagementPoc.GeneratedMSBuildEditorConfig.editorconfig
